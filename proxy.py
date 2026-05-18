@@ -10,15 +10,12 @@ import datetime
 PROXY_HOST = "0.0.0.0"
 PROXY_PORT = 8080
 
-# Alamat Web Server — ganti IP jika beda mesin
-SERVER_HOST = "127.0.0.1"
-SERVER_PORT = 8000
+SERVER_HOST = "127.0.0.1"   # Alamat web server (local)
+SERVER_PORT = 8000          # port web server
 
-# Folder penyimpanan cache (relatif terhadap proxy.py)
-CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
+CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache") # Direktori untuk menyimpan cache
 
-# Timeout koneksi ke web server (detik)
-SERVER_TIMEOUT = 5
+SERVER_TIMEOUT = 5          # Timeout (second) 
 
 
 # ─────────────────────────────────────────
@@ -92,7 +89,6 @@ def forward_to_server(raw_request):
         s.connect((SERVER_HOST, SERVER_PORT))
         s.sendall(raw_request)
 
-        # Terima seluruh response
         response = b""
         while True:
             try:
@@ -163,7 +159,6 @@ def handle_client(conn, addr):
             log("PROXY", f"{client_ip} - 400 Bad Request")
             return
 
-        # Hanya handle GET
         if method != "GET":
             conn.sendall(build_error_response(405, "Method Not Allowed"))
             log("PROXY", f"{client_ip} {method} {path} - 405")
@@ -182,7 +177,6 @@ def handle_client(conn, addr):
         # ── CACHE MISS → forward ke web server ──
         log("CACHE", f"MISS | {path} → forwarding ke server")
 
-        # Bangun ulang request yang bersih untuk dikirim ke server
         clean_request = f"GET {path} HTTP/1.1\r\nHost: {SERVER_HOST}:{SERVER_PORT}\r\nConnection: close\r\n\r\n"
         response, error = forward_to_server(clean_request.encode())
 
@@ -195,14 +189,13 @@ def handle_client(conn, addr):
                 log("PROXY", f"{client_ip} GET {path} - 502 Bad Gateway ({error})")
             return
 
-        # ── Cek status code dari response server ──
         try:
             response_text = response.split(b"\r\n")[0].decode("utf-8", errors="replace")
             status_code = int(response_text.split(" ")[1])
         except Exception:
             status_code = 0
 
-        # Simpan ke cache hanya jika response 200 OK
+        # simpan ke cache HANYA jika status 200 ok
         if status_code == 200:
             save_to_cache(path, response)
             log("CACHE", f"STORED | {path} | {len(response)} bytes")

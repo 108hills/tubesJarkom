@@ -12,8 +12,8 @@ TCP_PORT = 8000
 UDP_HOST = "0.0.0.0"
 UDP_PORT = 9000
 
-# Direktori tempat file HTML disimpan (sama dengan lokasi webserver.py)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Direktori tempat file HTML disimpan
+BASE_DIR = "HTML"
 
 
 # ─────────────────────────────────────────
@@ -166,7 +166,7 @@ def start_udp_server():
     while True:
         try:
             data, addr = server.recvfrom(1024)
-            # Pantulkan persis payload yang diterima (echo)
+            # Pantulkan persis payload yang diterima (menggunakan echo)
             server.sendto(data, addr)
             log("UDP", f"Echo {len(data)} bytes -> {addr[0]}:{addr[1]} | payload: {data.decode('utf-8', errors='replace')}")
         except Exception as e:

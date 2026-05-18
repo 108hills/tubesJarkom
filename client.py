@@ -40,7 +40,6 @@ def mode_tcp(path):
         s.settimeout(10)
         s.connect((PROXY_HOST, PROXY_PORT))
 
-        # Bangun HTTP request manual
         request = (
             f"GET {path} HTTP/1.1\r\n"
             f"Host: {PROXY_HOST}:{PROXY_PORT}\r\n"
@@ -50,7 +49,6 @@ def mode_tcp(path):
         t_send = time.time()
         s.sendall(request.encode("utf-8"))
 
-        # Terima seluruh response
         response = b""
         while True:
             try:
@@ -70,7 +68,7 @@ def mode_tcp(path):
             log("TCP", "Tidak ada response dari proxy.")
             return
 
-        # Pisahkan header dan body
+        # Pemisahan header and body
         if b"\r\n\r\n" in response:
             header_part, body_part = response.split(b"\r\n\r\n", 1)
             header_text = header_part.decode("utf-8", errors="replace")
@@ -116,7 +114,7 @@ def mode_udp(target_host=None, count=None):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.settimeout(UDP_TIMEOUT)
 
-    rtt_list      = []   # RTT paket yang berhasil (ms)
+    rtt_list      = []  # ms
     lost          = 0
     total_payload = 0
     t_start       = time.time()
@@ -145,7 +143,7 @@ def mode_udp(target_host=None, count=None):
             lost += 1
             print(f"  Paket {seq:>3}: Request timed out")
 
-        # Jeda kecil antar paket
+        # jeda antar paket
         time.sleep(0.1)
 
     t_end    = time.time()
@@ -163,7 +161,6 @@ def mode_udp(target_host=None, count=None):
         rtt_avg = sum(rtt_list) / received
         rtt_max = max(rtt_list)
 
-        # Jitter = deviasi standar selisih RTT berurutan
         if received > 1:
             diffs   = [abs(rtt_list[i] - rtt_list[i-1]) for i in range(1, received)]
             mean_d  = sum(diffs) / len(diffs)
@@ -218,7 +215,6 @@ Cara penggunaan:
 if __name__ == "__main__":
     args = sys.argv[1:]
 
-    # Parse argumen sederhana
     def get_arg(flag, default=None):
         if flag in args:
             idx = args.index(flag)
