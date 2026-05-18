@@ -8,6 +8,12 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
 - `cache/`: Direktori cache untuk menyimpan response HTTP yang berhasil diambil oleh proxy.
 - `HTML/`: Konten web statis yang dilayani oleh `webserver.py`.
 
+## Anggota Kelompok
+
+- 103012400371 : A MUH IMRAN RAMADHAN A
+- 103012400230 : AHMAD KADHIM
+- 103012400386 : HAMAD DAFALA
+
 ## Persyaratan
 
 - Python 3.x
