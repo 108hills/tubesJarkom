@@ -28,22 +28,27 @@ cache_lock = threading.Lock()
 
 
 # ─────────────────────────────────────────
-#  HELPER: LOGGING
+#  HELPER: LOGGING (OTOMATIS SIMPAN)
 # ─────────────────────────────────────────
 def log(tag, message):
     now = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{now}] [{tag}] {message}")
-
+    log_entry = f"[{now}] [{tag}] {message}"
+    print(log_entry)
+    
+    # Buat folder 'logs' jika belum ada bray
+    os.makedirs("logs", exist_ok=True)
+    
+    try:
+        # Simpan di dalam folder logs/
+        with open(os.path.join("logs", "log_proxy.txt"), "a", encoding="utf-8") as f:
+            f.write(log_entry + "\n")
+    except Exception as e:
+        print(f"Gagal menulis ke log file: {e}")
 
 # ─────────────────────────────────────────
 #  HELPER: KONVERSI URL PATH → NAMA FILE CACHE
 # ─────────────────────────────────────────
 def path_to_cache_filename(path):
-    """
-    Contoh:
-      /index.html        -> cache/index.html
-      /subdir/page.html  -> cache/subdir_page.html
-    """
     safe = path.lstrip("/").replace("/", "_")
     if not safe:
         safe = "index.html"
@@ -78,11 +83,6 @@ def save_to_cache(path, data):
 #  HELPER: FORWARD REQUEST KE WEB SERVER
 # ─────────────────────────────────────────
 def forward_to_server(raw_request):
-    """
-    Kirim raw HTTP request ke web server.
-    Return (response_bytes, error_string).
-    error_string = None jika sukses.
-    """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(SERVER_TIMEOUT)
@@ -136,7 +136,6 @@ def handle_client(conn, addr):
     start_time = datetime.datetime.now()
 
     try:
-        # ── Terima request dari client ──
         raw = b""
         while b"\r\n\r\n" not in raw:
             chunk = conn.recv(4096)
@@ -147,7 +146,6 @@ def handle_client(conn, addr):
         if not raw:
             return
 
-        # ── Parse request line ──
         try:
             text = raw.decode("utf-8", errors="replace")
             request_line = text.split("\r\n")[0]
@@ -195,7 +193,6 @@ def handle_client(conn, addr):
         except Exception:
             status_code = 0
 
-        # simpan ke cache HANYA jika status 200 ok
         if status_code == 200:
             save_to_cache(path, response)
             log("CACHE", f"STORED | {path} | {len(response)} bytes")

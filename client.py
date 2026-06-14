@@ -3,36 +3,56 @@ import time
 import sys
 import datetime
 import math
+import os
 
 # ─────────────────────────────────────────
 #  KONFIGURASI
 # ─────────────────────────────────────────
-PROXY_HOST = "127.0.0.1"   # Ganti IP jika proxy di mesin lain
+PROXY_HOST = "127.0.0.1"   
 PROXY_PORT = 8080
 
-SERVER_HOST = "127.0.0.1"  # Untuk UDP QoS — arahkan ke web server
+SERVER_HOST = "127.0.0.1"  
 UDP_PORT = 9000
 
-UDP_PACKET_COUNT = 10       # Jumlah paket UDP yang dikirim
-UDP_TIMEOUT = 1.0           # Timeout per paket (detik)
-TCP_DEFAULT_PATH = "/HTML/index.html"  # Path default untuk mode TCP
+UDP_PACKET_COUNT = 10       
+UDP_TIMEOUT = 1.0           
+TCP_DEFAULT_PATH = "/HTML/index.html"  
 
 
 # ─────────────────────────────────────────
-#  HELPER: LOGGING
+#  HELPER: LOGGING (OTOMATIS SIMPAN)
 # ─────────────────────────────────────────
 def log(tag, message):
     now = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{now}] [{tag}] {message}")
+    log_entry = f"[{now}] [{tag}] {message}"
+    print(log_entry)
+    
+    # Buat folder 'logs' jika belum ada bray
+    os.makedirs("logs", exist_ok=True)
+    
+    try:
+        # Simpan di dalam folder logs/
+        with open(os.path.join("logs", "log_client.txt"), "a", encoding="utf-8") as f:
+            f.write(log_entry + "\n")
+    except Exception as e:
+        print(f"Gagal menulis ke log file: {e}")
+
+def save_output_to_file(text_block):
+    # Buat folder 'logs' jika belum ada bray
+    os.makedirs("logs", exist_ok=True)
+    
+    try:
+        # Simpan di dalam folder logs/
+        with open(os.path.join("logs", "hasil_client.txt"), "a", encoding="utf-8") as f:
+            f.write(text_block + "\n")
+    except Exception as e:
+        print(f"Gagal menyimpan output ke file: {e}")
 
 
 # ─────────────────────────────────────────
 #  MODE TCP — HTTP CLIENT
 # ─────────────────────────────────────────
 def mode_tcp(path):
-    """
-    Kirim HTTP GET request ke proxy, tampilkan response di terminal.
-    """
     log("TCP", f"Mengirim GET {path} ke proxy {PROXY_HOST}:{PROXY_PORT}")
 
     try:
@@ -68,7 +88,6 @@ def mode_tcp(path):
             log("TCP", "Tidak ada response dari proxy.")
             return
 
-        # Pemisahan header and body
         if b"\r\n\r\n" in response:
             header_part, body_part = response.split(b"\r\n\r\n", 1)
             header_text = header_part.decode("utf-8", errors="replace")
@@ -78,16 +97,21 @@ def mode_tcp(path):
             status_line = "(tidak ada header)"
             body_part = response
 
-        print("\n" + "═" * 60)
-        print(f"  STATUS  : {status_line}")
-        print(f"  RTT     : {rtt_ms:.2f} ms")
-        print(f"  UKURAN  : {len(response)} bytes (header + body)")
-        print("═" * 60)
-        print("\n── HEADER ──")
-        print(header_text)
-        print("── BODY (500 karakter pertama) ──")
-        print(body_part[:500].decode("utf-8", errors="replace"))
-        print("─" * 60 + "\n")
+        # Format output tabel agar dicetak di CMD sekaligus di-save ke file
+        output_tcp = f"""
+{"═" * 60}
+  STATUS  : {status_line}
+  RTT     : {rtt_ms:.2f} ms
+  UKURAN  : {len(response)} bytes (header + body)
+{"═" * 60}
+── HEADER ──
+{header_text}
+── BODY (500 karakter pertama) ──
+{body_part[:500].decode("utf-8", errors="replace")}
+{"─" * 60}
+"""
+        print(output_tcp)
+        save_output_to_file(output_tcp)
 
     except ConnectionRefusedError:
         log("TCP", f"Koneksi ditolak — pastikan proxy berjalan di {PROXY_HOST}:{PROXY_PORT}")
@@ -101,10 +125,6 @@ def mode_tcp(path):
 #  MODE UDP — QoS PINGER
 # ─────────────────────────────────────────
 def mode_udp(target_host=None, count=None):
-    """
-    Kirim UDP ping ke web server, ukur RTT, packet loss, jitter, throughput.
-    Format payload: "Ping <seq> <timestamp>"
-    """
     host  = target_host or SERVER_HOST
     n     = count or UDP_PACKET_COUNT
 
@@ -114,7 +134,7 @@ def mode_udp(target_host=None, count=None):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.settimeout(UDP_TIMEOUT)
 
-    rtt_list      = []  # ms
+    rtt_list      = []  
     lost          = 0
     total_payload = 0
     t_start       = time.time()
@@ -134,27 +154,28 @@ def mode_udp(target_host=None, count=None):
             rtt_ms = (t_recv - t_send) * 1000
             rtt_list.append(rtt_ms)
 
-            # Verifikasi echo
             echo_ok = (data == payload)
             status  = "OK" if echo_ok else "ECHO MISMATCH"
-            print(f"  Paket {seq:>3}: RTT = {rtt_ms:7.3f} ms  [{status}]")
+            
+            loop_log = f"  Paket {seq:>3}: RTT = {rtt_ms:7.3f} ms  [{status}]"
+            print(loop_log)
+            save_output_to_file(loop_log) # Simpan baris RTT per paket
 
         except socket.timeout:
             lost += 1
-            print(f"  Paket {seq:>3}: Request timed out")
+            loop_log = f"  Paket {seq:>3}: Request timed out"
+            print(loop_log)
+            save_output_to_file(loop_log)
 
-        # jeda antar paket
         time.sleep(0.1)
 
     t_end    = time.time()
     duration = t_end - t_start
-
     s.close()
 
-    # ── Hitung statistik ──
     received   = len(rtt_list)
     loss_pct   = (lost / n) * 100
-    throughput = (total_payload * 8) / duration / 1000  # kbps
+    throughput = (total_payload * 8) / duration / 1000  
 
     if received > 0:
         rtt_min = min(rtt_list)
@@ -171,18 +192,23 @@ def mode_udp(target_host=None, count=None):
     else:
         rtt_min = rtt_avg = rtt_max = jitter = 0.0
 
-    print("\n" + "═" * 60)
-    print(f"  QoS STATISTIK — {host}:{UDP_PORT}")
-    print("═" * 60)
-    print(f"  Paket dikirim   : {n}")
-    print(f"  Paket diterima  : {received}")
-    print(f"  Packet Loss     : {loss_pct:.1f}%")
-    print(f"  RTT min         : {rtt_min:.3f} ms")
-    print(f"  RTT avg         : {rtt_avg:.3f} ms")
-    print(f"  RTT max         : {rtt_max:.3f} ms")
-    print(f"  Jitter          : {jitter:.3f} ms")
-    print(f"  Throughput      : {throughput:.3f} kbps")
-    print("═" * 60 + "\n")
+    # Format output tabel statistik
+    output_udp = f"""
+{"═" * 60}
+  QoS STATISTIK — {host}:{UDP_PORT}
+{"═" * 60}
+  Paket dikirim   : {n}
+  Paket diterima  : {received}
+  Packet Loss     : {loss_pct:.1f}%
+  RTT min         : {rtt_min:.3f} ms
+  RTT avg         : {rtt_avg:.3f} ms
+  RTT max         : {rtt_max:.3f} ms
+  Jitter          : {jitter:.3f} ms
+  Throughput      : {throughput:.3f} kbps
+{"═" * 60}
+"""
+    print(output_udp)
+    save_output_to_file(output_udp)
 
 
 # ─────────────────────────────────────────
@@ -191,27 +217,13 @@ def mode_udp(target_host=None, count=None):
 def print_usage():
     print("""
 Cara penggunaan:
-
   Mode TCP (HTTP):
     python client.py -mode tcp
-    python client.py -mode tcp -path /HTML/index.html
-    python client.py -mode tcp -path /HTML/osi.html
-
   Mode UDP (QoS):
     python client.py -mode udp
-    python client.py -mode udp -host 192.168.1.10 -count 20
-
-  Konfigurasi default:
-    Proxy   : 127.0.0.1:8080
-    Server  : 127.0.0.1:9000 (UDP)
-    Path    : /HTML/index.html (TCP)
-    Count   : 10 paket
 """)
 
 
-# ─────────────────────────────────────────
-#  MAIN
-# ─────────────────────────────────────────
 if __name__ == "__main__":
     args = sys.argv[1:]
 

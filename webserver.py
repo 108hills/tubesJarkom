@@ -17,11 +17,22 @@ BASE_DIR = "HTML"
 
 
 # ─────────────────────────────────────────
-#  HELPER: LOGGING
+#  HELPER: LOGGING (OTOMATIS SIMPAN)
 # ─────────────────────────────────────────
 def log(tag, message):
     now = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{now}] [{tag}] {message}")
+    log_entry = f"[{now}] [{tag}] {message}"
+    print(log_entry)
+    
+    # Buat folder 'logs' jika belum ada bray
+    os.makedirs("logs", exist_ok=True)
+    
+    try:
+        # Simpan di dalam folder logs/
+        with open(os.path.join("logs", "log_server.txt"), "a", encoding="utf-8") as f:
+            f.write(log_entry + "\n")
+    except Exception as e:
+        print(f"Gagal menulis ke log file: {e}")
 
 
 # ─────────────────────────────────────────
