@@ -12,7 +12,8 @@ PROXY_HOST = "127.0.0.1"
 PROXY_PORT = 8080
 
 SERVER_HOST = "127.0.0.1"  
-UDP_PORT = 9000
+UDP_PORT_SERVER = 9090
+UDP_PORT_PROXY  = 9091
 
 UDP_PACKET_COUNT = 10       
 UDP_TIMEOUT = 1.0           
@@ -124,11 +125,13 @@ def mode_tcp(path):
 # ─────────────────────────────────────────
 #  MODE UDP — QoS PINGER
 # ─────────────────────────────────────────
-def mode_udp(target_host=None, count=None):
+def mode_udp(target_host=None, count=None, target_port=None):
     host  = target_host or SERVER_HOST
     n     = count or UDP_PACKET_COUNT
 
-    log("UDP", f"Memulai QoS ping ke {host}:{UDP_PORT} — {n} paket")
+    port = target_port or UDP_PORT_SERVER
+
+    log("UDP", f"Memulai QoS ping ke {host}:{port} — {n} paket")
     print()
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -145,7 +148,7 @@ def mode_udp(target_host=None, count=None):
         total_payload += len(payload)
 
         try:
-            s.sendto(payload, (host, UDP_PORT))
+            s.sendto(payload, (host, port))
             t_send = time.time()
 
             data, _ = s.recvfrom(1024)
@@ -195,7 +198,7 @@ def mode_udp(target_host=None, count=None):
     # Format output tabel statistik
     output_udp = f"""
 {"═" * 60}
-  QoS STATISTIK — {host}:{UDP_PORT}
+  QoS STATISTIK — {host}:{port}
 {"═" * 60}
   Paket dikirim   : {n}
   Paket diterima  : {received}
@@ -244,9 +247,14 @@ if __name__ == "__main__":
     except ValueError:
         count = None
 
+    target = get_arg("-target", "server")  # default ke server
+
     if mode == "tcp":
         mode_tcp(path)
     elif mode == "udp":
-        mode_udp(target_host=host, count=count)
+        if target == "proxy":
+            mode_udp(target_host=PROXY_HOST, count=count, target_port=UDP_PORT_PROXY)
+        else:
+            mode_udp(target_host=SERVER_HOST, count=count, target_port=UDP_PORT_SERVER)
     else:
         print_usage()

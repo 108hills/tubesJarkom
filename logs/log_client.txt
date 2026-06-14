@@ -1,0 +1,14 @@
+[17:10:38] [TCP] Mengirim GET /index,html ke proxy 127.0.0.1:8080
+[17:10:45] [TCP] Mengirim GET /index.html ke proxy 127.0.0.1:8080
+[17:11:04] [TCP] Mengirim GET /index.html ke proxy 127.0.0.1:8080
+[17:11:22] [UDP] Memulai QoS ping ke 127.0.0.1:9000 — 20 paket
+[17:12:38] [UDP] Memulai QoS ping ke 127.0.0.1:9000 — 20 paket
+[17:12:46] [TCP] Mengirim GET /index.html ke proxy 127.0.0.1:8080
+[17:13:24] [TCP] Mengirim GET /osi.html ke proxy 127.0.0.1:8080
+[17:13:28] [TCP] Mengirim GET /osi ke proxy 127.0.0.1:8080
+[17:23:15] [TCP] Mengirim GET /osi ke proxy 127.0.0.1:8080
+[17:23:18] [TCP] Mengirim GET /osi.html ke proxy 127.0.0.1:8080
+[17:23:24] [UDP] Memulai QoS ping ke 127.0.0.1:9000 — 20 paket
+[17:23:39] [UDP] Memulai QoS ping ke 127.0.0.1:9090 — 20 paket
+[17:23:46] [UDP] Memulai QoS ping ke 127.0.0.1:9090 — 1000 paket
+[17:24:01] [UDP] Memulai QoS ping ke 127.0.0.1:9090 — 1000 paket

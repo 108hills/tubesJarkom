@@ -13,6 +13,9 @@ PROXY_PORT = 8080
 SERVER_HOST = "127.0.0.1"   # Alamat web server (local)
 SERVER_PORT = 8000          # port web server
 
+UDP_HOST = "0.0.0.0"
+UDP_PORT = 9091
+
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache") # Direktori untuk menyimpan cache
 
 SERVER_TIMEOUT = 5          # Timeout (second) 
@@ -214,6 +217,25 @@ def handle_client(conn, addr):
 
 
 # ─────────────────────────────────────────
+#  UDP LISTENER (QoS Pass-through)
+# ─────────────────────────────────────────
+def start_udp_listener():
+    server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server.bind((UDP_HOST, UDP_PORT))
+    log("UDP", f"QoS Listener aktif di port {UDP_PORT}")
+
+    while True:
+        try:
+            data, addr = server.recvfrom(1024)
+            log("UDP", f"Diterima {len(data)} bytes dari {addr[0]}:{addr[1]} | payload: {data.decode('utf-8', errors='replace')}")
+            # Pantulkan kembali ke client (echo)
+            server.sendto(data, addr)
+            log("UDP", f"Echo {len(data)} bytes → {addr[0]}:{addr[1]}")
+        except Exception as e:
+            log("UDP", f"Error: {e}")
+
+
+# ─────────────────────────────────────────
 #  MAIN: PROXY SERVER
 # ─────────────────────────────────────────
 def start_proxy():
@@ -237,6 +259,10 @@ def start_proxy():
 
 if __name__ == "__main__":
     try:
+        # UDP listener di thread terpisah
+        udp_thread = threading.Thread(target=start_udp_listener, daemon=True)
+        udp_thread.start()
+
         start_proxy()
     except KeyboardInterrupt:
         log("PROXY", "Proxy dihentikan.")

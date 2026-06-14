@@ -36,7 +36,7 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
    ```
 
    - HTTP server akan berjalan pada `0.0.0.0:8000`.
-   - UDP QoS echo server akan berjalan pada `0.0.0.0:9000`.
+   - UDP QoS echo server akan berjalan pada `0.0.0.0:9090`.
 
 2. Jalankan proxy:
 
@@ -44,7 +44,8 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
    py proxy.py
    ```
 
-   - Proxy mendengarkan pada `0.0.0.0:8080`.
+   - Proxy mendengarkan pada `0.0.0.0:8080` (TCP HTTP).
+   - Proxy UDP QoS listener berjalan pada `0.0.0.0:9091`.
    - Proxy akan meneruskan permintaan ke web server.
 
 3. Jalankan client untuk mode TCP (HTTP):
@@ -65,17 +66,24 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
    py client.py -mode udp
    ```
 
+   Default target adalah web server (`9090`). Untuk menargetkan proxy (`9091`):
+
+   ```powershell
+   py client.py -mode udp -target proxy
+   ```
+
    Jika ingin menargetkan host spesifik atau jumlah paket berbeda:
 
    ```powershell
    py client.py -mode udp -host 127.0.0.1 -count 20
+   py client.py -mode udp -host 127.0.0.1 -count 20 -target proxy
    ```
 
 ## Konfigurasi
 
 Nilai default dapat diubah langsung di file Python:
 
-- `client.py`: `PROXY_HOST`, `PROXY_PORT`, `SERVER_HOST`, `UDP_PORT`, `UDP_PACKET_COUNT`.
+- `client.py`: `PROXY_HOST`, `PROXY_PORT`, `SERVER_HOST`, `UDP_PORT_SERVER`, `UDP_PORT_PROXY`, `UDP_PACKET_COUNT`.
 - `proxy.py`: `PROXY_HOST`, `PROXY_PORT`, `SERVER_HOST`, `SERVER_PORT`, `CACHE_DIR`.
 - `webserver.py`: `TCP_HOST`, `TCP_PORT`, `UDP_HOST`, `UDP_PORT`.
 
@@ -90,3 +98,4 @@ Nilai default dapat diubah langsung di file Python:
 - Pastikan `webserver.py` dan `proxy.py` berjalan sebelum menggunakan `client.py`.
 - Cache proxy disimpan di `cache/`.
 - Struktur path HTTP default di `client.py` adalah `/HTML/index.html`.
+- Untuk pengujian **multi-device** (3 laptop, satu Wi-Fi): ubah `SERVER_HOST` di `proxy.py` dan `PROXY_HOST`/`SERVER_HOST` di `client.py` sesuai IP LAN masing-masing laptop. `webserver.py` tidak perlu diubah.
