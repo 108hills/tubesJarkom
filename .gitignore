@@ -1,8 +1,10 @@
 # Logs
 logs/
+/code/logs/
 
 # Cache
 cache/
+/code/cache/
 
 # Python
 __pycache__/

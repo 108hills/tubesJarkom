@@ -9,7 +9,7 @@ import threading
 # ─────────────────────────────────────────
 #  KONFIGURASI
 # ─────────────────────────────────────────
-PROXY_HOST = "127.0.0.1"   # Alamat proxy (localhost)
+PROXY_HOST = "127.0.0.1"   # Alamat proxy
 PROXY_PORT = 8080
 
 SERVER_HOST = "127.0.0.1"  # Alamat web server (localhost)

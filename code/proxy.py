@@ -10,13 +10,15 @@ import datetime
 PROXY_HOST = "0.0.0.0"
 PROXY_PORT = 8080
 
-SERVER_HOST = "0.0.0.0"   # Alamat web server (local)
+SERVER_HOST = "127.0.0.1"   # Alamat web server (localhost)
 SERVER_PORT = 8000          # port web server
 
 UDP_HOST = "0.0.0.0"
 UDP_PORT = 9091
 
-CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache") # Direktori untuk menyimpan cache
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CACHE_DIR = os.path.join(SCRIPT_DIR, "cache")   # Direktori untuk menyimpan cache
+LOGS_DIR  = os.path.join(SCRIPT_DIR, "logs")    # Direktori untuk menyimpan logs
 
 SERVER_TIMEOUT = 5          # Timeout (second) 
 
@@ -39,11 +41,11 @@ def log(tag, message):
     print(log_entry)
     
     # Buat folder 'logs' jika belum ada bray
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(LOGS_DIR, exist_ok=True)
     
     try:
         # Simpan di dalam folder logs/
-        with open(os.path.join("logs", "log_proxy.txt"), "a", encoding="utf-8") as f:
+        with open(os.path.join(LOGS_DIR, "log_proxy.txt"), "a", encoding="utf-8") as f:
             f.write(log_entry + "\n")
     except Exception as e:
         print(f"Gagal menulis ke log file: {e}")

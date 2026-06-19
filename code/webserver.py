@@ -12,8 +12,14 @@ TCP_PORT = 8000
 UDP_HOST = "0.0.0.0"
 UDP_PORT = 9090
 
+# Direktori dasar = lokasi file webserver.py
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Direktori tempat file HTML disimpan
-BASE_DIR = "HTML"
+BASE_DIR = os.path.join(SCRIPT_DIR, "HTML")
+
+# Direktori logs
+LOGS_DIR = os.path.join(SCRIPT_DIR, "logs")
 
 
 # ─────────────────────────────────────────
@@ -25,11 +31,11 @@ def log(tag, message):
     print(log_entry)
     
     # Buat folder 'logs' jika belum ada bray
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(LOGS_DIR, exist_ok=True)
     
     try:
         # Simpan di dalam folder logs/
-        with open(os.path.join("logs", "log_server.txt"), "a", encoding="utf-8") as f:
+        with open(os.path.join(LOGS_DIR, "log_server.txt"), "a", encoding="utf-8") as f:
             f.write(log_entry + "\n")
     except Exception as e:
         print(f"Gagal menulis ke log file: {e}")
