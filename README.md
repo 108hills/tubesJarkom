@@ -87,14 +87,19 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
 
    Mode ini menjalankan TCP dan UDP secara **paralel** menggunakan thread terpisah.
 
-## Multithreading
-
-Client mendukung opsi `-thread N` untuk menjalankan **N thread paralel** dari mode yang dipilih.
-
 | Flag | Deskripsi |
 |---|---|
 | `-thread N` | Jumlah thread yang dijalankan secara paralel (default: 1) |
 | `-mode both` | Menjalankan TCP dan UDP bersamaan dalam thread terpisah |
+| `-mode TCP` | Menjalankan client dalam mode TCP (default) |
+| `-mode UDP` | Menjalankan client dalam mode UDP |
+| `-count N` | Jumlah paket UDP yang dikirim (default: 10) |
+| `-target <ip>` | Menargetkan IP tertentu |
+| `-path <path>` | Path file HTML yang diminta (default: /index.html) |
+
+## Multithreading
+
+Client mendukung opsi `-thread N` untuk menjalankan **N thread paralel** dari mode yang dipilih.
 
 ### Contoh Penggunaan
 
