@@ -1,0 +1,73 @@
+[14:33:35] [MAIN] Starting Web Server (TCP + UDP)...
+[14:33:35] [UDP] QoS Echo Server running on port 9090
+[14:39:03] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 1 1781854720.9028792
+[14:39:03] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 2 1781854721.0431578
+[14:39:03] [UDP] Echo 24 bytes -> 192.168.1.100:53386 | payload: Ping 3 1781854721.160583
+[14:39:03] [UDP] Echo 24 bytes -> 192.168.1.100:53386 | payload: Ping 4 1781854721.278682
+[14:39:03] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 5 1781854721.4151363
+[14:39:03] [UDP] Echo 24 bytes -> 192.168.1.100:53386 | payload: Ping 6 1781854721.532438
+[14:39:03] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 7 1781854721.6751342
+[14:39:04] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 8 1781854721.7951632
+[14:39:04] [UDP] Echo 24 bytes -> 192.168.1.100:53386 | payload: Ping 9 1781854721.929541
+[14:39:04] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 10 1781854722.0377972
+[14:39:04] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 11 1781854722.146989
+[14:39:04] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 12 1781854722.2539394
+[14:39:04] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 13 1781854722.3720686
+[14:39:04] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 14 1781854722.485151
+[14:39:04] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 15 1781854722.6004777
+[14:39:05] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 16 1781854722.7209017
+[14:39:05] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 17 1781854722.8315358
+[14:39:05] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 18 1781854722.950916
+[14:39:05] [UDP] Echo 25 bytes -> 192.168.1.100:53386 | payload: Ping 19 1781854723.079725
+[14:39:05] [UDP] Echo 26 bytes -> 192.168.1.100:53386 | payload: Ping 20 1781854723.1971495
+[14:43:15] [MAIN] Starting Web Server (TCP + UDP)...
+[14:45:56] [MAIN] Starting Web Server (TCP + UDP)...
+[14:45:56] [MAIN] TCP Listening on IP: 0.0.0.0 Port: 8000
+[14:45:56] [MAIN] UDP Listening on IP: 0.0.0.0 Port: 9090
+[14:45:56] [UDP] QoS Echo Server running on port 9090
+[14:45:56] [TCP] HTTP Server running on port 8000
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 1 1781855175.9873724
+[14:46:38] [UDP] Echo 24 bytes -> 192.168.1.100:52949 | payload: Ping 2 1781855176.097564
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 3 1781855176.2068427
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 4 1781855176.3136396
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 5 1781855176.4380639
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 6 1781855176.5568395
+[14:46:38] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 7 1781855176.6640103
+[14:46:39] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 8 1781855176.7834074
+[14:46:39] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 9 1781855176.9034066
+[14:46:39] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 10 1781855177.0226128
+[14:46:39] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 11 1781855177.1397989
+[14:46:39] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 12 1781855177.258829
+[14:46:39] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 13 1781855177.3778145
+[14:46:39] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 14 1781855177.497141
+[14:46:39] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 15 1781855177.6134546
+[14:46:40] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 16 1781855177.7312698
+[14:46:40] [UDP] Echo 25 bytes -> 192.168.1.100:52949 | payload: Ping 17 1781855177.849554
+[14:46:40] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 18 1781855177.9601188
+[14:46:40] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 19 1781855178.0773184
+[14:46:40] [UDP] Echo 26 bytes -> 192.168.1.100:52949 | payload: Ping 20 1781855178.1988833
+[14:51:53] [MAIN] Starting Web Server (TCP + UDP)...
+[14:51:53] [MAIN] TCP Listening on IP: 0.0.0.0 Port: 8000
+[14:51:53] [MAIN] UDP Listening on IP: 0.0.0.0 Port: 9090
+[14:51:53] [UDP] QoS Echo Server running on port 9090
+[14:51:53] [TCP] HTTP Server running on port 8000
+[14:53:00] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 1 1781855558.6547155
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 2 1781855558.7646732
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 3 1781855558.8818252
+[14:53:01] [UDP] Echo 24 bytes -> 192.168.1.100:59165 | payload: Ping 4 1781855559.000509
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 5 1781855559.1227407
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 6 1781855559.2395735
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 7 1781855559.3757272
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 8 1781855559.4832563
+[14:53:01] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 9 1781855559.5920198
+[14:53:02] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 10 1781855559.719311
+[14:53:02] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 11 1781855559.8411202
+[14:53:02] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 12 1781855559.959944
+[14:53:02] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 13 1781855560.0801334
+[14:53:02] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 14 1781855560.1905017
+[14:53:02] [UDP] Echo 25 bytes -> 192.168.1.100:59165 | payload: Ping 15 1781855560.299548
+[14:53:02] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 16 1781855560.4139848
+[14:53:02] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 17 1781855560.5221446
+[14:53:02] [UDP] Echo 24 bytes -> 192.168.1.100:59165 | payload: Ping 18 1781855560.63153
+[14:53:03] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 19 1781855560.7415757
+[14:53:03] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 20 1781855560.8611798

@@ -8,16 +8,16 @@ import os
 # ─────────────────────────────────────────
 #  KONFIGURASI
 # ─────────────────────────────────────────
-PROXY_HOST = "127.0.0.1"   
+PROXY_HOST = "192.168.1.102"   # Alamat proxy
 PROXY_PORT = 8080
 
-SERVER_HOST = "127.0.0.1"  
+SERVER_HOST = "192.168.1.103"  # Alamat web server
 UDP_PORT_SERVER = 9090
 UDP_PORT_PROXY  = 9091
 
 UDP_PACKET_COUNT = 10       
 UDP_TIMEOUT = 1.0           
-TCP_DEFAULT_PATH = "/HTML/index.html"  
+TCP_DEFAULT_PATH = "/index.html"  
 
 
 # ─────────────────────────────────────────

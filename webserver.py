@@ -188,6 +188,8 @@ def start_udp_server():
 # ─────────────────────────────────────────
 if __name__ == "__main__":
     log("MAIN", "Starting Web Server (TCP + UDP)...")
+    log("MAIN", f"TCP Listening on IP: {TCP_HOST} Port: {TCP_PORT}")
+    log("MAIN", f"UDP Listening on IP: {UDP_HOST} Port: {UDP_PORT}")
 
     # UDP server di thread terpisah
     udp_thread = threading.Thread(target=start_udp_server, daemon=True)

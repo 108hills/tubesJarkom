@@ -10,7 +10,7 @@ import datetime
 PROXY_HOST = "0.0.0.0"
 PROXY_PORT = 8080
 
-SERVER_HOST = "127.0.0.1"   # Alamat web server (local)
+SERVER_HOST = "192.168.1.103"   # Alamat web server (local)
 SERVER_PORT = 8000          # port web server
 
 UDP_HOST = "0.0.0.0"
@@ -243,7 +243,7 @@ def start_proxy():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((PROXY_HOST, PROXY_PORT))
     server.listen(50)
-    log("PROXY", f"Listening on port {PROXY_PORT}")
+    log("PROXY", f"Listening on IP: {PROXY_HOST} Port: {PROXY_PORT}")
     log("PROXY", f"Forwarding ke Web Server {SERVER_HOST}:{SERVER_PORT}")
     log("PROXY", f"Cache dir: {CACHE_DIR}")
 
