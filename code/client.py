@@ -9,10 +9,10 @@ import threading
 # ─────────────────────────────────────────
 #  KONFIGURASI
 # ─────────────────────────────────────────
-PROXY_HOST = "192.168.1.102"   # Alamat proxy
+PROXY_HOST = "127.0.0.1"   # Alamat proxy (localhost)
 PROXY_PORT = 8080
 
-SERVER_HOST = "192.168.1.103"  # Alamat web server
+SERVER_HOST = "127.0.0.1"  # Alamat web server (localhost)
 UDP_PORT_SERVER = 9090
 UDP_PORT_PROXY  = 9091
 
@@ -258,6 +258,8 @@ Cara penggunaan:
     python client.py -mode tcp -thread 5
     python client.py -mode udp -thread 3
     python client.py -mode both -thread 4
+
+  Lihat list Flags pada README.md untuk informasi lebih lanjut
 """)
 
 

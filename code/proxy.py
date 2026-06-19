@@ -10,7 +10,7 @@ import datetime
 PROXY_HOST = "0.0.0.0"
 PROXY_PORT = 8080
 
-SERVER_HOST = "192.168.1.103"   # Alamat web server (local)
+SERVER_HOST = "0.0.0.0"   # Alamat web server (local)
 SERVER_PORT = 8000          # port web server
 
 UDP_HOST = "0.0.0.0"
