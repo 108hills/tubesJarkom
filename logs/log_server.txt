@@ -71,3 +71,4 @@
 [14:53:02] [UDP] Echo 24 bytes -> 192.168.1.100:59165 | payload: Ping 18 1781855560.63153
 [14:53:03] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 19 1781855560.7415757
 [14:53:03] [UDP] Echo 26 bytes -> 192.168.1.100:59165 | payload: Ping 20 1781855560.8611798
+[14:57:42] [TCP] New connection from 192.168.1.106 — thread spawned (active: 2)

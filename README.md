@@ -79,6 +79,44 @@ Sistem sederhana untuk tugas jaringan komputer yang terdiri dari:
    py client.py -mode udp -host 127.0.0.1 -count 20 -target proxy
    ```
 
+5. Jalankan client mode **Both** (TCP + UDP bersamaan):
+
+   ```powershell
+   py client.py -mode both
+   ```
+
+   Mode ini menjalankan TCP dan UDP secara **paralel** menggunakan thread terpisah.
+
+## Multithreading
+
+Client mendukung opsi `-thread N` untuk menjalankan **N thread paralel** dari mode yang dipilih.
+
+| Flag | Deskripsi |
+|---|---|
+| `-thread N` | Jumlah thread yang dijalankan secara paralel (default: 1) |
+| `-mode both` | Menjalankan TCP dan UDP bersamaan dalam thread terpisah |
+
+### Contoh Penggunaan
+
+```powershell
+# 5 thread TCP paralel
+py client.py -mode tcp -thread 5
+
+# 3 thread UDP paralel
+py client.py -mode udp -thread 3
+
+# Both mode: 1 thread TCP + 1 thread UDP
+py client.py -mode both
+
+# Both mode: 4 thread TCP + 4 thread UDP (total 8 thread)
+py client.py -mode both -thread 4
+
+# UDP multithreading ke proxy
+py client.py -mode udp -thread 3 -target proxy
+```
+
+> **Catatan:** Jika `-thread` tidak diberikan atau bernilai 1, client berjalan single-threaded seperti biasa (tidak ada perubahan perilaku).
+
 ## Konfigurasi
 
 Nilai default dapat diubah langsung di file Python:
@@ -91,7 +129,7 @@ Nilai default dapat diubah langsung di file Python:
 
 - `webserver.py`: Melayani file HTML/CSS/JS statis melalui HTTP dan memantulkan paket UDP untuk QoS.
 - `proxy.py`: Menyimpan cache response HTTP 200 OK. Jika cache kosong, proxy meneruskan request ke web server.
-- `client.py`: Mengirim request HTTP ke proxy dan mengukur latency, loss, jitter, throughput untuk UDP.
+- `client.py`: Mengirim request HTTP ke proxy dan mengukur latency, loss, jitter, throughput untuk UDP. Mendukung multithreading untuk pengujian beban.
 
 ## Catatan
 

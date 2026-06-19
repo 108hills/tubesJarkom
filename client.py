@@ -4,6 +4,7 @@ import sys
 import datetime
 import math
 import os
+import threading
 
 # ─────────────────────────────────────────
 #  KONFIGURASI
@@ -215,6 +216,32 @@ def mode_udp(target_host=None, count=None, target_port=None):
 
 
 # ─────────────────────────────────────────
+#  MULTITHREADING RUNNER
+# ─────────────────────────────────────────
+def run_threaded(target_func, args_list, thread_count, label):
+    """
+    Jalankan target_func sebanyak thread_count kali secara paralel.
+    args_list = list of tuples, satu per thread.
+    """
+    log("THREAD", f"Memulai {thread_count} thread untuk mode {label}")
+    threads = []
+    for i in range(thread_count):
+        args = args_list[i] if i < len(args_list) else args_list[0]
+        t = threading.Thread(target=target_func, args=args, name=f"{label}-{i+1}")
+        threads.append(t)
+
+    t_start = time.time()
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    t_end = time.time()
+
+    elapsed = (t_end - t_start) * 1000
+    log("THREAD", f"Semua {thread_count} thread {label} selesai dalam {elapsed:.2f} ms")
+
+
+# ─────────────────────────────────────────
 #  HELPER: USAGE
 # ─────────────────────────────────────────
 def print_usage():
@@ -224,6 +251,13 @@ Cara penggunaan:
     python client.py -mode tcp
   Mode UDP (QoS):
     python client.py -mode udp
+  Mode Both (TCP + UDP bersamaan):
+    python client.py -mode both
+
+  Multithreading (jalankan N thread paralel):
+    python client.py -mode tcp -thread 5
+    python client.py -mode udp -thread 3
+    python client.py -mode both -thread 4
 """)
 
 
@@ -241,20 +275,65 @@ if __name__ == "__main__":
     path = get_arg("-path", TCP_DEFAULT_PATH)
     host = get_arg("-host", None)
     count_str = get_arg("-count", None)
+    thread_str = get_arg("-thread", None)
 
     try:
         count = int(count_str) if count_str and count_str.isdigit() else None
     except ValueError:
         count = None
 
+    try:
+        thread_count = int(thread_str) if thread_str and thread_str.isdigit() else 1
+    except ValueError:
+        thread_count = 1
+
     target = get_arg("-target", "server")  # default ke server
 
+    # Tentukan parameter UDP berdasarkan target
+    udp_host = PROXY_HOST if target == "proxy" else SERVER_HOST
+    udp_port = UDP_PORT_PROXY if target == "proxy" else UDP_PORT_SERVER
+
     if mode == "tcp":
-        mode_tcp(path)
-    elif mode == "udp":
-        if target == "proxy":
-            mode_udp(target_host=PROXY_HOST, count=count, target_port=UDP_PORT_PROXY)
+        if thread_count > 1:
+            args_list = [(path,)] * thread_count
+            run_threaded(mode_tcp, args_list, thread_count, "TCP")
         else:
-            mode_udp(target_host=SERVER_HOST, count=count, target_port=UDP_PORT_SERVER)
+            mode_tcp(path)
+
+    elif mode == "udp":
+        if thread_count > 1:
+            args_list = [(udp_host, count, udp_port)] * thread_count
+            run_threaded(mode_udp, args_list, thread_count, "UDP")
+        else:
+            mode_udp(target_host=udp_host, count=count, target_port=udp_port)
+
+    elif mode == "both":
+        log("MAIN", "Mode BOTH — menjalankan TCP dan UDP secara bersamaan")
+        threads = []
+
+        # Buat thread TCP
+        for i in range(thread_count):
+            t = threading.Thread(target=mode_tcp, args=(path,), name=f"TCP-{i+1}")
+            threads.append(t)
+
+        # Buat thread UDP
+        for i in range(thread_count):
+            t = threading.Thread(
+                target=mode_udp,
+                args=(udp_host, count, udp_port),
+                name=f"UDP-{i+1}"
+            )
+            threads.append(t)
+
+        t_start = time.time()
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        t_end = time.time()
+
+        elapsed = (t_end - t_start) * 1000
+        log("MAIN", f"Mode BOTH selesai — {thread_count} TCP + {thread_count} UDP thread dalam {elapsed:.2f} ms")
+
     else:
         print_usage()
