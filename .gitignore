@@ -1,0 +1,9 @@
+# Logs
+logs/
+
+# Cache
+cache/
+
+# Python
+__pycache__/
+*.pyc
