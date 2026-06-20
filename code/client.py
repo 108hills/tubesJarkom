@@ -13,7 +13,7 @@ PROXY_HOST = "127.0.0.1"   # Alamat proxy
 PROXY_PORT = 8080
 
 SERVER_HOST = "127.0.0.1"  # Alamat web server (localhost)
-UDP_PORT_SERVER = 9090
+UDP_PORT_SERVER = 9000
 UDP_PORT_PROXY  = 9091
 
 UDP_PACKET_COUNT = 10       
