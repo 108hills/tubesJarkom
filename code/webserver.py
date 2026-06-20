@@ -10,7 +10,7 @@ import datetime
 TCP_HOST = "0.0.0.0"
 TCP_PORT = 8000
 UDP_HOST = "0.0.0.0"
-UDP_PORT = 9090
+UDP_PORT = 9000
 
 # Direktori tempat file HTML disimpan
 BASE_DIR = "HTML"

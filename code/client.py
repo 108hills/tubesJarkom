@@ -165,7 +165,7 @@ def mode_udp(target_host=None, count=None, target_port=None):
             print(loop_log)
             save_output_to_file(loop_log) # Simpan baris RTT per paket
 
-        except socket.timeout:
+        except (socket.timeout, ConnectionResetError):
             lost += 1
             loop_log = f"  Paket {seq:>3}: Request timed out"
             print(loop_log)
